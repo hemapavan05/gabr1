@@ -1,4 +1,3 @@
-```yaml
 name: CI-WORKFLOW
 
 on:
@@ -103,4 +102,4 @@ jobs:
     steps:
       - name: Output of the Job
         run: echo "${{ toJson(github) }}"
-```
+

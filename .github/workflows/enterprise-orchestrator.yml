@@ -1,3 +1,4 @@
+```yaml
 name: CI-WORKFLOW
 
 on:
@@ -38,13 +39,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Show Inputs
         run: |
           echo "Username: ${{ inputs.username }}"
           echo "Environment: ${{ inputs.environment }}"
           echo "Deploy: ${{ inputs.deploy }}"
 
-      - name: Build
+      - name: Install Dependencies
         run: npm install
 
 
@@ -55,6 +61,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Test
         run: npm test
@@ -75,15 +89,18 @@ jobs:
           echo "Deployed by ${{ inputs.username }}"
 
       - name: Skip Deployment
-        if: ${{ inputs.deploy == false }}
+        if: ${{ inputs.deploy != true }}
         run: echo "Deployment skipped"
 
       - name: Rollback
         if: failure()
         run: echo "Rollback is done"
 
+
   info:
-     runs-on: ubuntu-latest
-     steps:
-       - name: Output of the Job
-         run: echo "${{ toJson(github) }}"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Output of the Job
+        run: echo "${{ toJson(github) }}"
+```
